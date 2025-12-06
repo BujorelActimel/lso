@@ -100,6 +100,25 @@ class TestDirectoryScanning:
         assert "lib2.so" in so_names
         assert "lib3.so" in so_names
 
+    def test_find_versioned_so_files(self, tmp_path):
+        (tmp_path / "libssl.so").touch()
+        (tmp_path / "libssl.so.3").touch()
+        (tmp_path / "libc.so.6").touch()
+        (tmp_path / "libpthread.so.0").touch()
+        (tmp_path / "libfoo.so.1.2.3").touch()
+        (tmp_path / "notlib.txt").touch()
+
+        result = lso.find_so_files(str(tmp_path))
+
+        assert len(result) == 5
+        so_names = [Path(p).name for p in result]
+        assert "libssl.so" in so_names
+        assert "libssl.so.3" in so_names
+        assert "libc.so.6" in so_names
+        assert "libpthread.so.0" in so_names
+        assert "libfoo.so.1.2.3" in so_names
+        assert "notlib.txt" not in so_names
+
     def test_scan_directory_aggregates_functions(self, fixtures_dir):
         result = lso.scan_directory(str(fixtures_dir), include_static=False, verbose=False)
 
