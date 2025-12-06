@@ -1,0 +1,20 @@
+[project]
+name = "lso"
+version = "0.1.0"
+description = "List functions from shared objects on Linux"
+requires-python = ">=3.8"
+dependencies = [
+    "pyelftools",
+]
+
+[project.scripts]
+lso = "lso:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest",
+]
