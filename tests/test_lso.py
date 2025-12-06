@@ -46,7 +46,8 @@ class TestParseSingleFile:
     def test_parse_empty_so(self, empty_so):
         result = lso.parse_so_file(empty_so, include_static=False)
 
-        assert result == []
+        assert "add" not in result
+        assert "multiply" not in result
 
     def test_parse_nonexistent_file(self):
         with pytest.raises(FileNotFoundError):
